@@ -4,14 +4,14 @@ import cv2
 import matplotlib.pyplot as plt
 
 def normalize( img , val ):
-    minmag = min(img.flatten())
+    minmag = min(img.ravel())
     img2 = img - minmag
-    maxmag = max(img2.flatten())
+    maxmag = max(img2.ravel())
     img3 = (val/maxmag)*img2
     return img3
 	
 def remove_extreme ( img, k ):
-    mf=img.flatten()
+    mf=img.ravel()
     maxmag = max(mf)
     secondmax=mf[0];
     if secondmax==maxmag :
@@ -22,8 +22,8 @@ def remove_extreme ( img, k ):
     img[np.unravel_index(img.argmax(),img.shape)]=k*secondmax
 
 def make_linear_polar ( img ):
-    nrows=img.shape[0]/2
-    ncols=img.shape[0]/2
+    nrows=img.shape[0]>>1
+    ncols=img.shape[0]>>1
     radius=np.sqrt((nrows*nrows+ncols*ncols))
     #prop=cv2.WARP_INVERSE_MAP
     prop=cv2.WARP_FILL_OUTLIERS
@@ -33,20 +33,20 @@ def make_linear_polar ( img ):
 def rotate( img, angle ):
     row = img.shape[0]
     col = img.shape[1]
-    center = tuple(np.array([row,col])/2)
+    center = (row>>1, col>>1)
     rot_mat = cv2.getRotationMatrix2D(center,angle,1.0)
     return cv2.warpAffine(img, rot_mat, (col,row), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
 
 def rotate_bound(image, angle):
-    (h, w) = image.shape[:2]
-    (cX, cY) = (w // 2, h // 2)
+    (h, w) = (image.shape[0], image.shape[1])
+    (cX, cY) = (w>>1, h>>1)
     M = cv2.getRotationMatrix2D((cX, cY), angle, 1.0)
     cos = np.abs(M[0, 0])
     sin = np.abs(M[0, 1])
     nW = int((h * sin) + (w * cos))
     nH = int((h * cos) + (w * sin))
-    M[0, 2] += (nW / 2) - cX
-    M[1, 2] += (nH / 2) - cY
+    M[0, 2] += (nW>>1) - cX
+    M[1, 2] += (nH>>1) - cY
     return cv2.warpAffine(image, M, (nW, nH), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
 
 # construct the argument parse and parse the arguments
@@ -69,7 +69,9 @@ ap.add_argument("-bin", "--binary", required=False, action="store_true",
 args = vars(ap.parse_args())
 
 # load the image from disk
-image = cv2.imread(args["image"],0)
+imgx = cv2.imread(args["image"])
+image = cv2.cvtColor(imgx, cv2.COLOR_BGR2GRAY)
+#image = cv2.imread(args["image"],0)
 
 if args["threshold"]:
     blur=cv2.GaussianBlur(image,(5,5),0)
@@ -83,17 +85,12 @@ nrows=max(nrows,ncols)
 ncols=nrows
 
 if args["binary"]:
-    binpow=2
-    while 1:
-        binpow=binpow<<1
-        if binpow>=nrows:
-            break
-
+    binpow=1<<(nrows-1).bit_length()
     nrows = binpow
     ncols = binpow
 
-r = (ncols - cols)/2
-b = (nrows - rows)/2
+r = (ncols - cols)>>1
+b = (nrows - rows)>>1
 bordertype = cv2.BORDER_CONSTANT #just to avoid line breakup in PDF file
 nimg = cv2.copyMakeBorder(image,b,b,r,r,bordertype, value = [255,255,255])
 
@@ -103,7 +100,7 @@ magnitude, angle = cv2.cartToPolar(dft_shift[:,:,0],dft_shift[:,:,1]);
 magnitude = np.sqrt(magnitude)
 if args["extreme"]:
     remove_extreme(magnitude,args["extremeval"])
-magnitude = normalize(abs(magnitude),args["brightness"])
+magnitude = normalize(magnitude,args["brightness"])
 
 img3=make_linear_polar(magnitude)
 img3=normalize(img3,255.)
@@ -130,11 +127,10 @@ if args["hack"]:
 
 angle=-angle
 
-imgx = cv2.imread(args["image"])
 deskewed = rotate_bound(imgx,angle);
 cv2.imwrite("deskewed_"+args["image"], deskewed);
 
-print "Angle of input picture is "+str(-angle)
+print "Angle: "+str(-angle)
 
 if args["verbose"]:
     print "Full angle is "+str((360-ww))
