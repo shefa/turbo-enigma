@@ -27,21 +27,26 @@ Meteor.methods({
         var img = Images.find(id).fetch()[0];
         var path = img.path;
         console.log(path);
-        console.log(img.storagePath)
         var child = Npm.require("child_process");
         
         var realName = img._id+'.'+img.extension;
-        var command = "cd "+img._storagePath+" && bash all.sh "+realName;
-        console.log("going to call this command ");
-        console.log(command);
+        var command = "cd "+img._storagePath+" && bash split.sh "+realName;
+        var command2 = "cd "+img._storagePath+" && bash all.sh "+realName;
+        console.log("Splitting image...");
         child.exec(command, function(error,stdout,stderr){
-            console.log("Command completed!!!");
-            console.log(stdout);
+            console.log("Split completed!!!");
             Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:img._id, meta:{}});
             Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:img._id, meta:{}});
             Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:img._id, meta:{}});
-            Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:img._id, meta:{}});
-            OCR.addFile(img._storagePath+"/out_"+realName+'.txt', { fileName:"ocr" , type:"text/plain", userId:img._id, meta:{}});
+
+            console.log("Cleaning image and doing OCR...");
+
+            child.exec(command2, function(error,stdout,stderr){
+                console.log("All finished");
+                Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:img._id, meta:{}});
+                OCR.addFile(img._storagePath+"/out_"+realName+'.txt', { fileName:"ocr" , type:"text/plain", userId:img._id, meta:{}});
+            });
+
         });
 
 
