@@ -31,9 +31,9 @@ Meteor.methods({
         console.log(command);
         child.exec(command, function(error,stdout,stderr){
             console.log("Command completed!!!");
-            Processed.addFile(imt._storagePath+"/split_edged_blurred_"+realName { fileName:"edged", type:img.type, userId:img._id, fileId: 'splitEdge', meta:{}});
-            Processed.addFile(imt._storagePath+"/split_contours_"+realName { fileName:"contours" , type:img.type, userId:img._id,  fileId: 'splitContour', meta:{}});
-            Processed.addFile(imt._storagePath+"/split_final_"+realName { fileName:"final" , type:img.type, userId:img._id,        fileId: 'splitFinal', meta:{}});
+            Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edged", type:img.type, userId:img._id, fileId: 'splitEdge', meta:{}});
+            Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:img._id,  fileId: 'splitContour', meta:{}});
+            Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"final" , type:img.type, userId:img._id,        fileId: 'splitFinal', meta:{}});
         });
 
 
