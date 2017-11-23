@@ -28,7 +28,11 @@
                     {{#each img in resultOCR.each}}
                     <div class="ui inverted raised very padded text container segment">
                       <h3 class="ui inverted header">OCR Text:</h3>
-                      <textarea id="OCRtext">{{getStuff img.link}}</textarea>                    
+                      <div class="ui inverted form">
+                        <div class="field">
+                            <textarea id="OCRtext">{{getStuff img.link}}</textarea> 
+                        </div> 
+                      </div>                  
                     </div>
                     {{/each}}
                 </div>

@@ -20,6 +20,8 @@ Template.process_page.helpers({
     },
     getStuff: function(link)
     {
+        console.log("getting the shit ");
+        console.log(link);
         $("#OCRtext").load(link);
     },
     processing: function()
