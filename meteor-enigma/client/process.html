@@ -1,0 +1,37 @@
+<template name="process_page">
+    <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui container">
+            <div class="ui large secondary inverted pointing menu">
+                <a class="toc item"><i class="sidebar icon"></i></a>
+                <a href="/" class="item">Home</a>
+                <a href="/demo" class="item">Demo</a>
+                <div class="right item">
+                <a href="/try" class="ui inverted button">Try it yourself!</a>
+                </div>
+            </div>
+        </div>
+        <div class="ui container stuff">
+            <div class="ui two column grid">
+                <div class="column">
+                    <h3 class="ui inverted header">Original Image:</h3>
+                    <img class="ui medium image" src="{{originalLink}}"/>
+                </div>
+                <div class="column">
+                    <h3 class="ui inverted header">Processed Image:</h3>
+                    <img class="ui medium image" src="{{resultLink}}" />
+                </div>
+            </div>
+        </div>
+        <div class="ui container stuff">
+            <h3 class="ui inverted header stuff">Processing applied:</h3>
+            <div class="ui three column grid">
+                {{#each res in processing.each}}
+                    <div class="column">
+                        <h2 class="ui inverted header">{{res.name}}</h2>
+                        <img class="ui medium image" src="{{res.link}}"/>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,25 +1,85 @@
 <head>
-  <title>meteor-enigma</title>
+  <title>Turbo Meteor Enigma</title>
 </head>
 
-<body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
-  {{> info}}
-</body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="App_body">
+    {{> Template.dynamic template=main}}    
+    {{>footer}}
 </template>
 
-<template name="info">
-  <h2>Learn Meteor!</h2>
-  <ul>
-    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-  </ul>
+<template name="menu">
+    <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui container">
+            <div class="ui large secondary inverted pointing menu">
+                <a class="toc item"><i class="sidebar icon"></i></a>
+                <a href="/" class="active item">Home</a>
+                <a href="/demo" class="item">Demo</a>
+                <div class="right item">
+                <a href="/try" class="ui inverted button">Try it yourself!</a>
+                </div>
+            </div>
+        </div>
+        <div class="ui text container">
+            <h1 class="ui inverted dividing header">Turbo-Meteor-Enigma</h1>
+            <h2>Image preprocessing and ocr web interface</h2>
+            <a href="/demo" class="ui huge primary button">Get Started <i class="right arrow icon"></i></a>
+        </div>
+    </div>
+</template>
+
+<template name="footer">
+    <div class="ui inverted vertical footer segment">
+        <div class="ui container">
+            <p>Web interface for turbo-enigma - Image preprocessing and OCR with python.</p>
+            <p>Developed by Georgi Marinov for Taxback International</p>
+            <p>November, 2017</p>
+        </div>
+    </div>
+</template>
+
+<template name="home_page">
+    {{> menu}}
+</template>
+
+<template name="demo_page">
+    <div class="ui inverted vertical masthead center aligned segment">
+         <div class="ui container">
+            <div class="ui large secondary inverted pointing menu">
+                <a class="toc item"><i class="sidebar icon"></i></a>
+                <a href="/" class="item">Home</a>
+                <a href="/demo" class="active item">Demo</a>
+                <div class="right item">
+                <a href="/try" class="ui inverted button">Try it yourself!</a>
+                </div>
+            </div>
+        </div>
+        {{> uploadedFiles}}
+    </div>
+</template>
+
+<template name="hello">
+    <div class="ui text container">
+        <h1 class="ui inverted dividing header">
+        <button class="ui huge primary button">Click Me</button>
+        <p>You've pressed the button {{counter}} times.</p>
+        </h1>
+    </div>
+</template>
+
+<template name="App_notFound">
+    <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui container">
+            <div class="ui large secondary inverted pointing menu">
+                <a class="toc item"><i class="sidebar icon"></i></a>
+                <a href="/" class="item">Home</a>
+                <a href="/demo" class="item">Demo</a>
+                <div class="right item">
+                <a href="/try" class="ui inverted button">Try it yourself!</a>
+                </div>
+            </div>
+        </div>
+        <div class="ui text container">
+            <h1 class="ui inverted dividing header">404 Not Found</h1>
+        </div>
+    </div>
 </template>

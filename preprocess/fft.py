@@ -134,7 +134,7 @@ print "Angle: "+str(-angle)
 
 if args["verbose"]:
     print "Full angle is "+str((360-ww))
-    cv2.imwrite("padded_"+args["image"],nimg)
+    #cv2.imwrite("padded_"+args["image"],nimg)
     cv2.imwrite("fft_" + args["image"], magnitude)
     cv2.imwrite("fft_polar_" + args["image"], np.rot90(img3,axes=(-2,-1)) )
     plt.plot(x)

@@ -1,0 +1,39 @@
+<template name="uploadForm">
+  {{#with currentUpload}}
+    Uploading <b>{{file.name}}</b>: 
+    <span id="progress">{{progress.get}}%</span>
+  {{else}}
+    <div class="ui inverted input stuff">
+        <input id="fileInput" type="file" />
+    </div>
+    <div class="ui text container">
+        <p><small>Upload file in <code>jpeg</code> or <code>png</code> format, with size less or equal to 50MB</small></p>
+    </div>
+  {{/with}}
+</template>
+
+<template name="uploadedFiles">
+    {{#if uploadedFiles.count}}
+    <div class="ui text container stuff">
+        <p>Choose one of the uploaded pictures to process:</p>
+    </div>
+    
+    <div class="ui container three column grid stuff">
+      {{#each file in uploadedFiles.each}}
+        <div class="column">
+            <img id="{{file._id}}" class="ui small image" src="{{file.link}}" alt="{{file.name}}" />
+        </div>
+      {{/each}}
+    </div>
+    <div class="stuff">
+    <div id="processBtn" class="ui huge primary button">Process Image</div>
+    </div>
+  {{else}}
+    <div>No files uploaded, yet</div>
+  {{/if}}
+</template>
+
+<template name='file'>
+  <img src="{{imageFile.link}}" alt="{{imageFile.name}}" />
+  <hr>
+</template>
