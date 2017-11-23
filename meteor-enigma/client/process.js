@@ -21,7 +21,7 @@ Template.process_page.helpers({
     getStuff: function(link)
     {
         $("#OCRtext").load(link);
-    }
+    },
     processing: function()
     {
         var id = FlowRouter.getParam("_id");
