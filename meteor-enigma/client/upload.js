@@ -14,7 +14,9 @@ Template.uploadedFiles.helpers({
     return Images.find();
   },
   alreadyProcessed: function() {
-    return Processed.find({userId:Template.instance().selectedImg.get()});
+    var imgId = Template.instance().selectedImg.get();
+    console.log(imgId);
+    return Processed.find({userId:imgId});
   }
 });
 
