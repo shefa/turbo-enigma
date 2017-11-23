@@ -15,9 +15,13 @@ Template.process_page.helpers({
     },
     resultOCR: function()
     {
-        console.log(OCR.find({userId:FlowRouter.getParam("_id")}).fetch());
-        return OCR.find({userId:FlowRouter.getParam("_id")});
+        //console.log(OCR.find({userId:FlowRouter.getParam("_id")}).fetch());
+        return OCR.findOne({userId:FlowRouter.getParam("_id")});
     },
+    getStuff: function(link)
+    {
+        $("#OCRtext").load(link);
+    }
     processing: function()
     {
         var id = FlowRouter.getParam("_id");
