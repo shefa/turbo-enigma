@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="ui container stuff">
-            <div class="ui two column grid">
+            <div class="ui three column grid">
                 <div class="column">
                     {{#each img in originalLink.each}}
                         <h3 class="ui inverted header">Original Image:</h3>
@@ -22,6 +22,14 @@
                     {{#each img in resultLink.each}}
                     <h3 class="ui inverted header">Processed Image:</h3>
                     <img class="ui medium image" src="{{img.link}}" />
+                    {{/each}}
+                </div>
+                <div class="column">
+                    {{#each img in resultOCR.each}}
+                    <div class="ui inverted raised very padded text container segment">
+                      <h3 class="ui inverted header">OCR Text:</h3>
+                      <p>{{img.text}}</p>                    
+                    </div>
                     {{/each}}
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Images from '/models/images.js';
 import Processed from '/models/processed.js';
+import OCR from '/models/ocr.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -21,6 +22,7 @@ Meteor.methods({
         console.log("Going to process the image on server");
         console.log("Deleting so far accumulated stuff");      
         Processed.remove({userId:id});
+        OCR.remove({userId:id});
 
         var img = Images.find(id).fetch()[0];
         var path = img.path;
@@ -34,9 +36,11 @@ Meteor.methods({
         console.log(command);
         child.exec(command, function(error,stdout,stderr){
             console.log("Command completed!!!");
-            Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edged", type:img.type, userId:img._id, meta:{}});
+            Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:img._id, meta:{}});
             Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:img._id, meta:{}});
-            Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"final" , type:img.type, userId:img._id, meta:{}});
+            Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:img._id, meta:{}});
+            Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:img._id, meta:{}});
+            OCR.addFile(img._storagePath+"/out_"+img._id+'.txt', { fileName:"ocr" , type:"text/plain", userId:img._id, meta:{}});
         });
 
 
