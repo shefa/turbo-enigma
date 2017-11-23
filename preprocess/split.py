@@ -49,16 +49,19 @@ ap.add_argument("-i", "--image", required = True,
 args = vars(ap.parse_args())
 
 image = cv2.imread(args["image"])
-ratio = image.shape[0] / 500.0
+ratio = image.shape[0] / 700.0
 orig = image.copy()
-image = resize(image, height = 500)
+image = resize(image, height = 700)
 
 
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 gray = cv2.GaussianBlur(gray, (5, 5), 0)
-edged = cv2.Canny(gray, 40, 150)
+#gray = cv2.medianBlur(gray,5)
+edged = cv2.Canny(gray, 10, 110)
+edged_blur = edged.copy()
+edged_blur = cv2.GaussianBlur(edged_blur, (3,3), 0)
 
-cnts = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[1]
+cnts = cv2.findContours(edged_blur.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[1]
 print len(cnts)
 cnts = sorted(cnts, key = cv2.contourArea, reverse = True)
 
@@ -87,5 +90,6 @@ warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
 
 
 cv2.imwrite("split_edged_"+args["image"],edged)
+cv2.imwrite("split_edged_blurred_"+args["image"],edged_blur)
 cv2.imwrite("split_contours_"+args["image"],image)
 cv2.imwrite("split_final_"+args["image"],warped)
