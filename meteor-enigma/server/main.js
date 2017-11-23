@@ -35,14 +35,18 @@ Meteor.methods({
         console.log("Splitting image...");
         child.exec(command, function(error,stdout,stderr){
             console.log("Split completed!!!");
-            Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:img._id, meta:{}});
-            Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:img._id, meta:{}});
-            Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:img._id, meta:{}});
+            Meteor.setTimeout(function(){
+                Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:id, meta:{}});
+                Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:id, meta:{}});
+                Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:id, meta:{}});
+            },1000);
+            
 
             console.log("Cleaning image and doing OCR...");
 
             child.exec(command2, function(error,stdout,stderr){
                 console.log("All finished");
+                console.log(stdout);
                 Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:img._id, meta:{}});
                 OCR.addFile(img._storagePath+"/out_"+realName+'.txt', { fileName:"ocr" , type:"text/plain", userId:img._id, meta:{}});
             });
