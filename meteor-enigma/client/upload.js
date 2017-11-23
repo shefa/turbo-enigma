@@ -12,7 +12,7 @@ Template.uploadedFiles.onCreated(function(){
 Template.uploadedFiles.helpers({
   uploadedFiles: function () {
     return Images.find();
-  }
+  },
   alreadyProcessed: function() {
     return Processed.find({userId:Template.instance().selectedImg.get()});
   }
