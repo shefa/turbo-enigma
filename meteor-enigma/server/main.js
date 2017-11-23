@@ -37,7 +37,7 @@ Meteor.methods({
 
 
         console.log("Splitting image...");
-        child.exec(command, Meteor.bindEnvironment( function(error,stdout,stderr){
+        child.exec(command, Meteor.bindEnvironment( function(e,x,y){
             console.log("Split completed!!!");
             Meteor.setTimeout( Meteor.bindEnvironment( function() {
                 Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:id, meta:{}});
