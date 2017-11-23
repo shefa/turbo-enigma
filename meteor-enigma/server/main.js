@@ -19,6 +19,9 @@ Meteor.startup(() => {
 Meteor.methods({
     processImg(id)
     {
+        var child = Npm.require("child_process");
+
+
         console.log("Going to process the image on server");
         console.log("Deleting so far accumulated stuff");      
         Processed.remove({userId:id});
@@ -26,20 +29,21 @@ Meteor.methods({
 
         var img = Images.find(id).fetch()[0];
         var path = img.path;
-        console.log(path);
-        var child = Npm.require("child_process");
+        
         
         var realName = img._id+'.'+img.extension;
         var command = "cd "+img._storagePath+" && bash split.sh "+realName;
         var command2 = "cd "+img._storagePath+" && bash all.sh "+realName;
+
+
         console.log("Splitting image...");
-        child.exec(command, function(error,stdout,stderr){
+        child.exec(command, Meteor.bindEnvironment( function(error,stdout,stderr){
             console.log("Split completed!!!");
-            Meteor.setTimeout(function(){
+            Meteor.setTimeout( Meteor.bindEnvironent( function(){
                 Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:id, meta:{}});
-            },1000);
+            },1000));
             
 
             console.log("Cleaning image and doing OCR...");
@@ -51,7 +55,7 @@ Meteor.methods({
                 OCR.addFile(img._storagePath+"/out_"+realName+'.txt', { fileName:"ocr" , type:"text/plain", userId:img._id, meta:{}});
             });
 
-        });
+        }));
 
 
         //Images.addFile(pathToFile,{fileName:'', type: img.type, userId
