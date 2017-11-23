@@ -16,7 +16,7 @@ Template.process_page.helpers({
     resultOCR: function()
     {
         //console.log(OCR.find({userId:FlowRouter.getParam("_id")}).fetch());
-        return OCR.findOne({userId:FlowRouter.getParam("_id")});
+        return OCR.find({userId:FlowRouter.getParam("_id")});
     },
     getStuff: function(link)
     {
