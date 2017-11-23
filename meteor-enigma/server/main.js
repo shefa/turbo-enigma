@@ -28,11 +28,11 @@ Meteor.methods({
         var command = "cd "+img._storagePath+" && bash all.sh "+realName+" 25 20";
         console.log("going to call this command ");
         console.log(command);
-        child.exec(command, function(error,stdout,stderr){
-        
-        });
+        //child.exec(command, function(error,stdout,stderr){
+        //
+        //});
 
 
-        Images.addFile(pathToFile,{fileName:'', type: 'image/jpg', userId
+        //Images.addFile(pathToFile,{fileName:'', type: 'image/jpg', userId
     }
 });
