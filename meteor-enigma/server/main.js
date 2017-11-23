@@ -33,7 +33,7 @@ Meteor.methods({
         var realName = img._id+'.'+img.extension;
         var command = "cd "+img._storagePath+" && bash split.sh "+realName;
         var command2 = "cd "+img._storagePath+" && bash all.sh "+realName;
-
+        var command3 = "cd "+img._storagePath+" &&tesseract --psm 1 --oem 1 -l eng out_"+realName+" stdout";
 
         console.log("Splitting image...");
         child.exec(command, Meteor.bindEnvironment( function(e,x,y){
@@ -42,17 +42,22 @@ Meteor.methods({
                 Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:id, meta:{}});
-            }),1000);
+            }),700);
             
 
             console.log("Cleaning image and doing OCR...");
 
-            child.exec(command2, function(error,stdout,stderr){
-                console.log("All finished");
-                console.log(stdout);
-                Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:id, meta:{}});
-                OCR.insert({ text:stdout , userId:id});
-            });
+            child.exec(command2, Meteor.bindEnvironment(function(e,x,y){
+                console.log("Image cleaned");
+                Meteor.setTimeout( Meteor.bindEnvironment( function() {
+                    Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:id, meta:{}});
+                }),700);
+
+                child.exec(command3, Meteor.bindEnvironment(function(e,x,y){
+                    console.log("All done!");
+                    OCR.insert({ text:x , userId:id});
+                }));
+            }));
 
         }));
 
