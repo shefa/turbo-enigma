@@ -6,11 +6,11 @@
 
 filter=25
 offset=18
-if [ "$1" != "" ]; then
+if [ "$2" != "" ]; then
     filter=$2
 fi
 
-if [ "$2" != "" ]; then
+if [ "$3" != "" ]; then
     offset=$3
 fi
 
