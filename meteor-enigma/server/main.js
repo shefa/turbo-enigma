@@ -19,6 +19,9 @@ Meteor.methods({
     processImg(id)
     {
         console.log("Going to process the image on server");
+        console.log("Deleting so far accumulated stuff");      
+        Processed.remove({userId:id});
+
         var img = Images.find(id).fetch()[0];
         var path = img.path;
         console.log(path);

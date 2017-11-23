@@ -7,14 +7,11 @@ import Processed from '/models/processed.js';
 Template.process_page.helpers({
     originalLink: function()
     {
-        var id = FlowRouter.getParam("_id");
-        console.log(" in original Link ");
-        console.log(id);
-        var img = Images.find(id).fetch()[0];
-        return img.link;
+        return Images.find(FlowRouter.getParam("_id"));
     },
     resultLink: function()
     {
+        return Processed.find({name:"final",userId:FlowRouter.getParam("_id")});
     },
     processing: function()
     {

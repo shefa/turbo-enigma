@@ -13,12 +13,16 @@
         <div class="ui container stuff">
             <div class="ui two column grid">
                 <div class="column">
-                    <h3 class="ui inverted header">Original Image:</h3>
-                    <img class="ui medium image" src="{{originalLink}}"/>
+                    {{#each originalLink}}
+                        <h3 class="ui inverted header">Original Image:</h3>
+                        <img class="ui medium image" src="{{link}}"/>
+                    {{/each}}
                 </div>
                 <div class="column">
+                    {{#each resultLink}}
                     <h3 class="ui inverted header">Processed Image:</h3>
-                    <img class="ui medium image" src="{{resultLink}}" />
+                    <img class="ui medium image" src="{{link}}" />
+                    {{#each}}
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import Images from '/models/images.js';
+import Processed from '/models/processed.js';
 import './upload.html';
 
 
@@ -11,6 +12,9 @@ Template.uploadedFiles.onCreated(function(){
 Template.uploadedFiles.helpers({
   uploadedFiles: function () {
     return Images.find();
+  }
+  alreadyProcessed: function() {
+    return Processed.find({userId:Template.instance().selectedImg.get()});
   }
 });
 
@@ -32,6 +36,20 @@ Template.uploadedFiles.events({
         if(id!==undefined&&id!==null)
         {   
             Meteor.call("processImg",id);
+            //console.log("redirecting to /process/"+id);
+            FlowRouter.go('process.image',{_id: id});
+        }
+        else
+        {
+            window.alert("Please select a picture for processing first!");
+        }
+    },
+    'click #viewBtn': function(e, template)
+    {
+        var id = template.selectedImg.get();
+        if(id!==undefined&&id!==null)
+        {   
+            //Meteor.call("processImg",id);
             //console.log("redirecting to /process/"+id);
             FlowRouter.go('process.image',{_id: id});
         }

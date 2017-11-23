@@ -27,6 +27,9 @@
     </div>
     <div class="stuff">
     <div id="processBtn" class="ui huge primary button">Process Image</div>
+    {{#if alreadyProcessed.count}}
+    <div id="viewBtn" class="ui huge primary button">View Processed</div>
+    {{/if}}
     </div>
   {{else}}
     <div>No files uploaded, yet</div>
