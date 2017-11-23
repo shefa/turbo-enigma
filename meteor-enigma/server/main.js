@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Images from '/models/images.js';
+import Processed from '/models/processed.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -23,16 +24,19 @@ Meteor.methods({
         console.log(path);
         console.log(img.storagePath)
         var child = Npm.require("child_process");
-        var a  = img.path.split("/");
-        var realName = a[a.length-1];
+        
+        var realName = img._id+'.'+img.extension;
         var command = "cd "+img._storagePath+" && bash all.sh "+realName+" 25 20";
         console.log("going to call this command ");
         console.log(command);
-        //child.exec(command, function(error,stdout,stderr){
-        //
-        //});
+        child.exec(command, function(error,stdout,stderr){
+            console.log("Command completed!!!");
+            Processed.addFile(imt._storagePath+"/split_edged_blurred_"+realName { fileName:"edged", type:img.type, userId:img._id, fileId: 'splitEdge', meta:{}});
+            Processed.addFile(imt._storagePath+"/split_contours_"+realName { fileName:"contours" , type:img.type, userId:img._id,  fileId: 'splitContour', meta:{}});
+            Processed.addFile(imt._storagePath+"/split_final_"+realName { fileName:"final" , type:img.type, userId:img._id,        fileId: 'splitFinal', meta:{}});
+        });
 
 
-        //Images.addFile(pathToFile,{fileName:'', type: 'image/jpg', userId
+        //Images.addFile(pathToFile,{fileName:'', type: img.type, userId
     }
 });

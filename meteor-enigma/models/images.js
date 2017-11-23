@@ -2,7 +2,7 @@ import { Meteor }          from 'meteor/meteor';
 import { FilesCollection } from 'meteor/ostrio:files';
 
 Images = new FilesCollection({
-  debug: true,
+  debug: false,
   collectionName: 'Images', 
   storagePath: '/root/coding/turbo-enigma/imageStore', 
   allowClientCode: false, // Disallow remove files from Client
