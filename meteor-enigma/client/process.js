@@ -27,7 +27,6 @@ Template.process_page.helpers({
     */
     processing: function()
     {
-        var id = FlowRouter.getParam("_id");
-        return Processed.find({userId:id});
+        return Processed.find({userId:FlowRouter.getParam("_id")});
     }
 });
