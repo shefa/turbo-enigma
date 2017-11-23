@@ -14,10 +14,14 @@ Meteor.methods({
         console.log(path);
         console.log(img.storagePath)
         var child = Npm.require("child_process");
-        var command = "cd "+img.storagePath+" && bash all.sh "+img.name+" 25 20";
+        var a  = img.path.split("/");
+        var realName = a[a.length-1];
+        var command = "cd "+img._storagePath+" && bash all.sh "+realName+" 25 20";
         console.log("going to call this command ");
         console.log(command);
-        //child.exec();
+        //child.exec(command, function(error,stdout,stderr){
+        //
+        //});
 
 
         //Images.addFile(pathToFile,{fileName:'', type: 'image/jpg', userId
