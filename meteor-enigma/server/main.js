@@ -36,6 +36,7 @@ Meteor.methods({
         console.log(command);
         child.exec(command, function(error,stdout,stderr){
             console.log("Command completed!!!");
+            console.log(stdout);
             Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:img._id, meta:{}});
             Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:img._id, meta:{}});
             Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:img._id, meta:{}});

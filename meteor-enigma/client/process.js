@@ -22,7 +22,7 @@ Template.process_page.helpers({
     {
         console.log("getting the shit ");
         console.log(link);
-        $("#OCRtext").load(link);
+        setTimeout(function(){ $("#OCRtext").load(link); }, 2000);
     },
     processing: function()
     {
