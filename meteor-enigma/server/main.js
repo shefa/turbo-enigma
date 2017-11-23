@@ -40,7 +40,7 @@ Meteor.methods({
             Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:img._id, meta:{}});
             Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:img._id, meta:{}});
             Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:img._id, meta:{}});
-            OCR.addFile(img._storagePath+"/out_"+img._id+'.txt', { fileName:"ocr" , type:"text/plain", userId:img._id, meta:{}});
+            OCR.addFile(img._storagePath+"/out_"+realName+'.txt', { fileName:"ocr" , type:"text/plain", userId:img._id, meta:{}});
         });
 
 
