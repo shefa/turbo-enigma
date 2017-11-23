@@ -39,7 +39,7 @@ Meteor.methods({
         console.log("Splitting image...");
         child.exec(command, Meteor.bindEnvironment( function(error,stdout,stderr){
             console.log("Split completed!!!");
-            Meteor.setTimeout( Meteor.bindEnvironment( function(){
+            Meteor.setTimeout( Meteor.bindEnvironment( function(err,res){
                 Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:id, meta:{}});
