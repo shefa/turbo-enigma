@@ -55,7 +55,7 @@ Meteor.methods({
 
                 child.exec(command3, Meteor.bindEnvironment(function(e,x,y){
                     console.log("3-All done!");
-                    console.log(x);
+                    //console.log(x);
                     OCR.insert({ text:x , userId:id});
                 }));
             }));
