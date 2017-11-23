@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Images from '/models/images.js';
 import Processed from '/models/processed.js';
-import OCR from '/models/ocr.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -51,8 +50,8 @@ Meteor.methods({
             child.exec(command2, function(error,stdout,stderr){
                 console.log("All finished");
                 console.log(stdout);
-                Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:img._id, meta:{}});
-                OCR.addFile(img._storagePath+"/out_"+realName+'.txt', { fileName:"ocr" , type:"text/plain", userId:img._id, meta:{}});
+                Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"final" , type:img.type, userId:id, meta:{}});
+                OCR.insert({ text:stdout , userId:id});
             });
 
         }));

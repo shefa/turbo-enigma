@@ -2,7 +2,6 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import Images from '/models/images.js';
 import Processed from '/models/processed.js';
-import OCR from '/models/ocr.js';
     
 Template.process_page.helpers({
     originalLink: function()
@@ -18,12 +17,14 @@ Template.process_page.helpers({
         //console.log(OCR.find({userId:FlowRouter.getParam("_id")}).fetch());
         return OCR.find({userId:FlowRouter.getParam("_id")});
     },
+    /*
     getStuff: function(link)
     {
         console.log("getting the shit ");
         console.log(link);
         setTimeout(function(){ $("#OCRtext").load(link); }, 2000);
     },
+    */
     processing: function()
     {
         var id = FlowRouter.getParam("_id");
