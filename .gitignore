@@ -1,4 +1,6 @@
 ./meteor-enigma/.meteor/local
+./imageStore/*.jpg
+./imageStore/*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
