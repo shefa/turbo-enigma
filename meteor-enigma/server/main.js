@@ -37,6 +37,7 @@ Meteor.methods({
         var command4 = "cd "+img._storagePath+" && tesseract --psm 1 --oem 1 -l eng out_"+realName+" stdout";
 
         console.log("1-Splitting image...");
+        
         child.exec(command, Meteor.bindEnvironment( function(e,x,y){
             console.log("1-Split completed!!!, splitted images = " + x);
             Meteor.setTimeout( Meteor.bindEnvironment( function() {
@@ -55,26 +56,21 @@ Meteor.methods({
             child.exec(command3, Meteor.bindEnvironment(function(e,x,y){
                 OCR.insert({ text:x, userId:id, type:1});
                 console.log("OCR done on split final image.");
-            }));
+                console.log("2-Cleaning image and doing OCR again...");
 
-            console.log("2-Cleaning image and doing OCR...");
+                child.exec(command2, Meteor.bindEnvironment(function(e,x,y){
+                    console.log("2-Image cleaned");
+                    Meteor.setTimeout( Meteor.bindEnvironment( function() {
+                        Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"cleaned" , type:img.type, userId:id, meta:{}});
+                    }),700);
 
-            child.exec(command2, Meteor.bindEnvironment(function(e,x,y){
-                console.log("2-Image cleaned");
-                Meteor.setTimeout( Meteor.bindEnvironment( function() {
-                    Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"cleaned" , type:img.type, userId:id, meta:{}});
-                }),700);
-
-                child.exec(command4, Meteor.bindEnvironment(function(e,x,y){
-                    console.log("3-All done!");
-                    //console.log(x);
-                    OCR.insert({ text:x , userId:id, type:2});
+                    child.exec(command4, Meteor.bindEnvironment(function(e,x,y){
+                        console.log("3-All done!");
+                        OCR.insert({ text:x , userId:id, type:2});
+                    }));
                 }));
             }));
 
         }));
-
-
-        //Images.addFile(pathToFile,{fileName:'', type: img.type, userId
     }
 });
