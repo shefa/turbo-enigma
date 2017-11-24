@@ -1,15 +1,4 @@
 <template name="process_page">
-    <div class="ui inverted vertical masthead center aligned segment">
-        <div class="ui container">
-            <div class="ui large secondary inverted pointing menu">
-                <a class="toc item"><i class="sidebar icon"></i></a>
-                <a href="/" class="item">Home</a>
-                <a href="/demo" class="item">Demo</a>
-                <div class="right item">
-                <a href="/try" class="ui inverted button">Try it yourself!</a>
-                </div>
-            </div>
-        </div>
         <div class="ui container stuff">
             <div class="ui three column grid">
                 <div class="column">
@@ -29,7 +18,7 @@
                     <div class="ui inverted raised very padded text container segment">
                       <h3 class="ui inverted header">OCR Text:</h3>
                       <div class="ui inverted form">
-                        <div class="field">
+                        <div class="four wide field">
                             <textarea id="OCRtext" rows=19>{{img.text}}</textarea> 
                         </div> 
                       </div>                  
@@ -49,5 +38,4 @@
                 {{/each}}
             </div>
         </div>
-    </div>
 </template>
