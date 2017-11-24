@@ -22,6 +22,13 @@ FlowRouter.route('/', {
   },
 });
 
+FlowRouter.route('/deskew/:_id', {
+    name: 'deskew.image',
+    action(){
+        BlazeLayout.render('App_body', {main: 'deskew_page'});
+    },
+});
+
 FlowRouter.route('/process/:_id', {
     name: 'process.image',
     action(){
