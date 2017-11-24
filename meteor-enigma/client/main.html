@@ -3,7 +3,10 @@
 </head>
 
 <template name="App_body">
-    {{> Template.dynamic template=main}}    
+    <div class="ui inverted vertical masthead center aligned segment">
+        {{>menu}}
+        {{> Template.dynamic template=main}} 
+    </div>
     {{>footer}}
 </template>
 
@@ -12,18 +15,14 @@
         <div class="ui container">
             <div class="ui large secondary inverted pointing menu">
                 <a class="toc item"><i class="sidebar icon"></i></a>
-                <a href="/" class="active item">Home</a>
+                <a href="/" class="item">Home</a>
                 <a href="/demo" class="item">Demo</a>
                 <div class="right item">
                 <a href="/try" class="ui inverted button">Upload image</a>
                 </div>
             </div>
         </div>
-        <div class="ui text container">
-            <h1 class="ui inverted dividing header">Turbo-Meteor-Enigma</h1>
-            <h2>Image preprocessing and ocr web interface</h2>
-            <a href="/demo" class="ui huge primary button">Get Started <i class="right arrow icon"></i></a>
-        </div>
+        
     </div>
 </template>
 
@@ -38,23 +37,15 @@
 </template>
 
 <template name="home_page">
-    {{> menu}}
+    <div class="ui text container">
+        <h1 class="ui inverted dividing header">Turbo-Meteor-Enigma</h1>
+        <h2>Image preprocessing and ocr web interface</h2>
+        <a href="/demo" class="ui huge primary button">Get Started <i class="right arrow icon"></i></a>
+    </div>
 </template>
 
 <template name="demo_page">
-    <div class="ui inverted vertical masthead center aligned segment">
-         <div class="ui container">
-            <div class="ui large secondary inverted pointing menu">
-                <a class="toc item"><i class="sidebar icon"></i></a>
-                <a href="/" class="item">Home</a>
-                <a href="/demo" class="active item">Demo</a>
-                <div class="right item">
-                <a href="/try" class="ui inverted button">Try it yourself!</a>
-                </div>
-            </div>
-        </div>
-        {{> uploadedFiles}}
-    </div>
+    {{> uploadedFiles}}
 </template>
 
 <template name="hello">
@@ -67,19 +58,7 @@
 </template>
 
 <template name="App_notFound">
-    <div class="ui inverted vertical masthead center aligned segment">
-        <div class="ui container">
-            <div class="ui large secondary inverted pointing menu">
-                <a class="toc item"><i class="sidebar icon"></i></a>
-                <a href="/" class="item">Home</a>
-                <a href="/demo" class="item">Demo</a>
-                <div class="right item">
-                <a href="/try" class="ui inverted button">Try it yourself!</a>
-                </div>
-            </div>
-        </div>
-        <div class="ui text container">
-            <h1 class="ui inverted dividing header">404 Not Found</h1>
-        </div>
+    <div class="ui text container">
+        <h1 class="ui inverted dividing header">404 Not Found</h1>
     </div>
 </template>
