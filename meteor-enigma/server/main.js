@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Images from '/models/images.js';
 import Processed from '/models/processed.js';
+import Deskewed from '/models/deskewed.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -16,6 +17,34 @@ Meteor.startup(() => {
 });
 
 Meteor.methods({
+    deskewImg(id)
+    {
+        var child = Npm.require("child_process");
+
+
+        console.log("Going to Deskew the image on server");
+        console.log("Deleting so far accumulated stuff");      
+        Deskewed.remove({userId:id});
+
+        var img = Images.find(id).fetch()[0];
+        var path = img.path;
+        
+        
+        var realName = img._id+'.'+img.extension;
+        var command = "cd "+img._storagePath+" && bash skew.sh "+realName;
+        
+        console.log("1-Deskewing image...");
+        
+        child.exec(command, Meteor.bindEnvironment( function(e,x,y){
+            console.log("1-Deskew completed!!!);
+            Meteor.setTimeout( Meteor.bindEnvironment( function() {
+                Deskewed.addFile(img._storagePath+"/fft_"+realName, { fileName:"Fourier Spectrum", type:img.type, userId:id, meta:{}});
+                Deskewed.addFile(img._storagePath+"/fft_polar_"+realName, { fileName:"Linear Polar" , type:img.type, userId:id, meta:{}});
+                Deskewed.addFile(img._storagePath+"/fft_polar_plot_"+realName+".png", { fileName:"Mean Plot" , type:"image/png", userId:id, meta:{}});
+                Deskewed.addFile(img._storagePath+"/deskewed_"+realName, { fileName:"Deskewed" , type:img.type, userId:id, meta:{}});
+            }),700);
+        }));
+    },
     processImg(id)
     {
         var child = Npm.require("child_process");
