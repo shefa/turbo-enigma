@@ -33,7 +33,7 @@ Meteor.methods({
         var realName = img._id+'.'+img.extension;
         var command = "cd "+img._storagePath+" && bash split.sh "+realName;
         var command2 = "cd "+img._storagePath+" && bash all.sh "+realName;
-        var command3 = "cd "+img._storagePath+" &&tesseract --psm 1 --oem 1 -l eng out_"+realName+" stdout";
+        var command3 = "cd "+img._storagePath+" && tesseract --psm 1 --oem 1 -l eng out_"+realName+" stdout";
 
         console.log("1-Splitting image...");
         child.exec(command, Meteor.bindEnvironment( function(e,x,y){
