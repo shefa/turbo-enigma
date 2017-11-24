@@ -2,10 +2,14 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import Images from '/models/images.js';
 import Processed from '/models/processed.js';
+import Deskewed from '/models/deskewed.js';
 import './upload.html';
 
 
 Template.uploadedFiles.onCreated(function(){
+    this.selectedImg = new ReactiveVar("");
+});
+Template.uploadedFilesSkew.onCreated(function(){
     this.selectedImg = new ReactiveVar("");
 });
 
@@ -19,51 +23,68 @@ Template.uploadedFiles.helpers({
   }
 });
 
+Template.uploadedFilesSkew.helpers({
+  uploadedFiles: function () {
+    return Images.find();
+  },
+  alreadyProcessed: function() {
+    var imgId = Template.instance().selectedImg.get();
+    return Deskewed.find({userId:imgId});
+  }
+});
+
 Template.uploadedFiles.events({
     'click img': function(e, template)
     {
-        var id = e.target.attributes['id'].value;
-        var path = Images.find(id).fetch()[0].path;
-          
+        var id = e.target.attributes['id'].value;     
         var old = document.getElementById(template.selectedImg.get());
         if(old!==undefined&&old!==null) old.style.border="none";
         e.target.style.border="solid 3px red";
         template.selectedImg.set(id);
-        
     },
     'click #processBtn': function(e, template)
     {
         var id = template.selectedImg.get();
-        if(id!==undefined&&id!==null)
-        {   
+        if(id!==undefined&&id!==null) {   
             Meteor.call("processImg",id);
-            //console.log("redirecting to /process/"+id);
             FlowRouter.go('process.image',{_id: id});
         }
-        else
-        {
-            window.alert("Please select a picture for processing first!");
-        }
+        else window.alert("Please select a picture for processing first!");
     },
     'click #viewBtn': function(e, template)
     {
         var id = template.selectedImg.get();
-        if(id!==undefined&&id!==null)
-        {   
-            //Meteor.call("processImg",id);
-            //console.log("redirecting to /process/"+id);
-            FlowRouter.go('process.image',{_id: id});
-        }
-        else
-        {
-            window.alert("Please select a picture for processing first!");
-        }
+        if(id!==undefined&&id!==null) FlowRouter.go('process.image',{_id: id});
+        else window.alert("Please select a picture for processing first!");
     }
 });
 
-Template.uploadedFiles.onRendered(function(){ 
-    Meteor.Images=Images;
+Template.uploadedFilesSkew.events({
+    'click img': function(e, template)
+    {
+        var id = e.target.attributes['id'].value;     
+        var old = document.getElementById(template.selectedImg.get());
+        if(old!==undefined&&old!==null) old.style.border="none";
+        e.target.style.border="solid 3px red";
+        template.selectedImg.set(id);
+    },
+    'click #processBtn': function(e, template)
+    {
+        var id = template.selectedImg.get();
+        if(id!==undefined&&id!==null) {   
+            Meteor.call("deskewImg",id);
+            FlowRouter.go('deskew.image',{_id: id});
+        }
+        else window.alert("Please select a picture for processing first!");
+    },
+    'click #viewBtn': function(e, template)
+    {
+        var id = template.selectedImg.get();
+        if(id!==undefined&&id!==null) FlowRouter.go('deskew.image',{_id: id});
+        else window.alert("Please select a picture for processing first!");
+    }
 });
+
 
 Template.uploadForm.onCreated(function () {
   this.currentUpload = new ReactiveVar(false);
