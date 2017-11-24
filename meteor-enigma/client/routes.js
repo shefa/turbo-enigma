@@ -1,6 +1,12 @@
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
+FlowRouter.route('/skew', {
+  name: 'skew.page',
+  action(params, queryParams) {
+    BlazeLayout.render('App_body', { main: 'skew_page' });
+  }
+});
 
 FlowRouter.route('/demo', {
   name: 'demo.page',
