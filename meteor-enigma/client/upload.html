@@ -35,3 +35,27 @@
     <div>No files uploaded, yet</div>
   {{/if}}
 </template>
+
+<template name="uploadedFilesSkew">
+    {{#if uploadedFiles.count}}
+    <div class="ui text container stuff">
+        <p>Choose one of the uploaded pictures to process:</p>
+    </div>
+    
+    <div class="ui container three column grid stuff">
+      {{#each file in uploadedFiles.each}}
+        <div class="column">
+            <img id="{{file._id}}" class="ui small image" src="{{file.link}}" alt="{{file.name}}" />
+        </div>
+      {{/each}}
+    </div>
+    <div class="stuff">
+    <div id="processBtn" class="ui huge primary button">Process Image</div>
+    {{#if alreadyProcessed.count}}
+    <div id="viewBtn" class="ui huge primary button">View Processed</div>
+    {{/if}}
+    </div>
+  {{else}}
+    <div>No files uploaded, yet</div>
+  {{/if}}
+</template>
