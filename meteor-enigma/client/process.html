@@ -47,3 +47,35 @@
             </div>
         </div>
 </template>
+
+
+
+<template name="deskew_page">
+        <div class="ui container stuff">
+            <div class="ui two column grid">
+                <div class="column">
+                    {{#each img in originalLink.each}}
+                        <h3 class="ui inverted header">Original Image:</h3>
+                        <img class="ui medium image" src="{{img.link}}"/>
+                    {{/each}}
+                </div>
+                <div class="column">
+                    {{#each img in resultLink.each}}
+                    <h3 class="ui inverted header">Deskewed Image:</h3>
+                    <img class="ui medium image" src="{{img.link}}" />
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="ui container stuff">
+            <h3 class="ui inverted header stuff">Processing applied:</h3>
+            <div class="ui three column grid">
+                {{#each res in processing.each}}
+                    <div class="column">
+                        <h2 class="ui inverted header">{{res.name}}</h2>
+                        <img class="ui medium image" src="{{res.link}}"/>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+</template>
