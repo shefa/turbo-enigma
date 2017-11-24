@@ -15,7 +15,6 @@ Template.uploadedFiles.helpers({
   },
   alreadyProcessed: function() {
     var imgId = Template.instance().selectedImg.get();
-    console.log(imgId);
     return Processed.find({userId:imgId});
   }
 });
