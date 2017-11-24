@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import Images from '/models/images.js';
 import Processed from '/models/processed.js';
+import Deskewed from '/models/deskewed.js';
     
 Template.process_page.helpers({
     originalLink: function()
@@ -34,5 +35,20 @@ Template.process_page.helpers({
     processing: function()
     {
         return Processed.find({userId:FlowRouter.getParam("_id")});
+    }
+});
+
+Template.deskew_page.helpers({
+    originalLink: function()
+    {
+        return Images.find(FlowRouter.getParam("_id"));
+    },
+    resultLink: function()
+    {
+        return Deskewed.find({name:"deskewed",userId:FlowRouter.getParam("_id")});
+    },
+    processing: function()
+    {
+        return Deskewed.find({userId:FlowRouter.getParam("_id")});
     }
 });
