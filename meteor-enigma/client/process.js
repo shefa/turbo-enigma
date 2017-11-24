@@ -10,13 +10,19 @@ Template.process_page.helpers({
     },
     resultLink: function()
     {
-        return Processed.find({name:"final",userId:FlowRouter.getParam("_id")});
+        return Processed.find({name:"threshold",userId:FlowRouter.getParam("_id")});
     },
     resultOCR: function()
     {
         //console.log(OCR.find({userId:FlowRouter.getParam("_id")}).fetch());
-        return OCR.find({userId:FlowRouter.getParam("_id")});
+        return OCR.find({userId:FlowRouter.getParam("_id"),type:1});
     },
+    resultOCRClean: function()
+    {
+        //console.log(OCR.find({userId:FlowRouter.getParam("_id")}).fetch());
+        return OCR.find({userId:FlowRouter.getParam("_id"),type:2});
+    },
+
     /*
     getStuff: function(link)
     {

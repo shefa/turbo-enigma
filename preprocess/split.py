@@ -1,6 +1,7 @@
 import numpy as np
 import argparse
 import cv2
+from skimage.filters import threshold_adaptive
 
 def resize(image, width = None, height = None, inter = cv2.INTER_AREA):
     dim = None
@@ -83,13 +84,14 @@ for c in cnts:
 warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
 
 # convert the warped image to grayscale, then threshold it
+final = warped.copy()
+final = cv2.cvtColor(final, cv2.COLOR_BGR2GRAY)
+final = threshold_adaptive(final, 251, offset = 10)
+final = final.astype("uint8") * 255
 
-#warped = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
-#warped = threshold_adaptive(warped, 251, offset = 10)
-#warped = warped.astype("uint8") * 255
 
-
-cv2.imwrite("split_edged_"+args["image"],edged)
+#cv2.imwrite("split_edged_"+args["image"],edged)
 cv2.imwrite("split_edged_blurred_"+args["image"],edged_blur)
 cv2.imwrite("split_contours_"+args["image"],image)
 cv2.imwrite("split_final_"+args["image"],warped)
+cv2.imwrite("split_final_thresh_"+args["image"],final)

@@ -15,14 +15,12 @@
                 </div>
                 <div class="column">
                     {{#each img in resultOCR}}
-                    <div class="ui inverted very padded text container segment">
                       <h3 class="ui inverted header">OCR Text:</h3>
                       <div class="ui inverted form">
                         <div class="field">
                             <textarea id="OCRtext" rows=19>{{img.text}}</textarea> 
                         </div> 
                       </div>                  
-                    </div>
                     {{/each}}
                 </div>
             </div>
@@ -34,6 +32,16 @@
                     <div class="column">
                         <h2 class="ui inverted header">{{res.name}}</h2>
                         <img class="ui medium image" src="{{res.link}}"/>
+                    </div>
+                {{/each}}
+                {{#each img in resultOCRClean}}
+                    <div class="column">
+                        <h2 class="ui inverted header">OCR Text Cleaned</h2>
+                        <div class="ui inverted form">
+                            <div class="field">
+                                <textarea rows=19>{{img.text}}</textarea>
+                            </div>
+                        </div>
                     </div>
                 {{/each}}
             </div>
