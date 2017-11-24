@@ -45,7 +45,7 @@ Template.deskew_page.helpers({
     },
     resultLink: function()
     {
-        return Deskewed.find({name:"deskewed",userId:FlowRouter.getParam("_id")});
+        return Deskewed.find({name:"Deskewed",userId:FlowRouter.getParam("_id")});
     },
     processing: function()
     {
