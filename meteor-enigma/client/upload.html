@@ -25,12 +25,30 @@
         </div>
       {{/each}}
     </div>
+    {{#if picSelected}}
     <div class="stuff">
-    <div id="processBtn" class="ui huge primary button">Process Image</div>
-    {{#if alreadyProcessed.count}}
-    <div id="viewBtn" class="ui huge primary button">View Processed</div>
-    {{/if}}
+        <div id="processBtn" class="ui huge primary button">Process Image</div>
+        {{#if alreadyProcessed.count}}
+        <div id="viewBtn" class="ui huge positive button">View Processed</div>
+        {{/if}}
+        <div id="deleteBtn" class="ui huge negative button">Delete Image</div>
     </div>
+    <div class="ui inverted text container stuff">
+        <div class="ui toggle checkbox">
+            <input id="cleanBox" type="checkbox" style="width: 18.5rem;">
+            <label style="color: rgba(255, 255, 255, 0.9) !important">Clean image background </label>
+        </div>
+    </div>
+    <div class="ui inverted segment stuff">
+        <i class="world icon"></i>
+        <select id="langBox" class="ui selection dropdown" style="padding-top: 0.5em; padding-bottom: 0.5em;">
+              <option value="eng">English</option>
+              <option value="bul">Bulgarian</option>
+              <option value="ger">German</option>
+        </select>
+        <br>
+    </div>
+    {{/if}}
   {{else}}
     <div>No files uploaded, yet</div>
   {{/if}}
@@ -50,9 +68,12 @@
       {{/each}}
     </div>
     <div class="stuff">
+    {{#if picSelected}}
     <div id="processBtn" class="ui huge primary button">Process Image</div>
     {{#if alreadyProcessed.count}}
-    <div id="viewBtn" class="ui huge primary button">View Processed</div>
+    <div id="viewBtn" class="ui huge positive button">View Processed</div>
+    {{/if}}
+    <div id="deleteBtn" class="ui huge negative button">Delete Image</div>
     {{/if}}
     </div>
   {{else}}

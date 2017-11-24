@@ -20,6 +20,9 @@ Template.uploadedFiles.helpers({
   alreadyProcessed: function() {
     var imgId = Template.instance().selectedImg.get();
     return Processed.find({userId:imgId});
+  },
+  picSelected: function(){
+      return (Template.instance().selectedImg.get()!=="");
   }
 });
 
@@ -30,6 +33,9 @@ Template.uploadedFilesSkew.helpers({
   alreadyProcessed: function() {
     var imgId = Template.instance().selectedImg.get();
     return Deskewed.find({userId:imgId});
+  },
+  picSelected: function(){
+      return (Template.instance().selectedImg.get()!=="");
   }
 });
 
@@ -45,17 +51,22 @@ Template.uploadedFiles.events({
     'click #processBtn': function(e, template)
     {
         var id = template.selectedImg.get();
-        if(id!==undefined&&id!==null) {   
-            Meteor.call("processImg",id);
+        if(id!==undefined&&id!==null) {
+            var clean = $("#cleanBox")[0].checked;
+            var lang = $("#langBox")[0].value;
+            Meteor.call("processImg",id,clean,lang);
             FlowRouter.go('process.image',{_id: id});
         }
-        else window.alert("Please select a picture for processing first!");
     },
     'click #viewBtn': function(e, template)
     {
         var id = template.selectedImg.get();
-        if(id!==undefined&&id!==null) FlowRouter.go('process.image',{_id: id});
-        else window.alert("Please select a picture for processing first!");
+        if(id!==undefined&&id!==null)FlowRouter.go('process.image',{_id: id});
+    },
+    'click #deleteBtn': function(e, template)
+    {
+        var id = template.selectedImg.get();
+        if(id!==undefined&&id!==null) Meteor.call("deleteImg",id);
     }
 });
 
@@ -75,13 +86,16 @@ Template.uploadedFilesSkew.events({
             Meteor.call("deskewImg",id);
             FlowRouter.go('deskew.image',{_id: id});
         }
-        else window.alert("Please select a picture for processing first!");
     },
     'click #viewBtn': function(e, template)
     {
         var id = template.selectedImg.get();
         if(id!==undefined&&id!==null) FlowRouter.go('deskew.image',{_id: id});
-        else window.alert("Please select a picture for processing first!");
+    },
+    'click #deleteBtn': function(e, template)
+    {
+        var id = template.selectedImg.get();
+        if(id!==undefined&&id!==null) Meteor.call("deleteImg",id);
     }
 });
 

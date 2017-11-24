@@ -17,6 +17,21 @@ Meteor.startup(() => {
 });
 
 Meteor.methods({
+    loadSampleImages()
+    {
+        Images.load('http://51.254.202.28/turbo-enigma/preprocess/test_img/scanned_receipt.jpg', {
+            fileName: 'receipt.jpg'
+        });
+        Images.load('http://51.254.202.28/turbo-enigma/preprocess/test_img/scanned_page.jpg', {
+            fileName: 'page.jpg'
+        });
+    },
+    deleteImg(id)
+    {
+        Images.remove(id);
+        Processed.remove({userId:id});
+        Deskewed.remove({userId:id});
+    },
     deskewImg(id)
     {
         var child = Npm.require("child_process");
@@ -46,12 +61,12 @@ Meteor.methods({
             }),700);
         }));
     },
-    processImg(id)
+    processImg(id,clean=false,language="eng")
     {
         var child = Npm.require("child_process");
 
 
-        console.log("Going to process the image on server");
+        console.log("Going to process the image on server - "+clean.toString()+" "+language);
         console.log("Deleting so far accumulated stuff");      
         Processed.remove({userId:id});
         OCR.remove({userId:id});
@@ -63,8 +78,8 @@ Meteor.methods({
         var realName = img._id+'.'+img.extension;
         var command = "cd "+img._storagePath+" && bash split.sh "+realName;
         var command2 = "cd "+img._storagePath+" && bash all.sh "+realName;
-        var command3 = "cd "+img._storagePath+" && tesseract --psm 1 --oem 1 -l eng split_final_"+realName+" stdout";
-        var command4 = "cd "+img._storagePath+" && tesseract --psm 1 --oem 1 -l eng out_"+realName+" stdout";
+        var command3 = "cd "+img._storagePath+" && tesseract --psm 1 --oem 1 -l "+language+" split_final_"+realName+" stdout";
+        var command4 = "cd "+img._storagePath+" && tesseract --psm 1 --oem 1 -l "+language+" out_"+realName+" stdout";
 
         console.log("1-Splitting image...");
         
@@ -88,7 +103,7 @@ Meteor.methods({
                 console.log("OCR done on split final image.");
                 console.log("2-Cleaning image and doing OCR again...");
 
-                child.exec(command2, Meteor.bindEnvironment(function(e,x,y){
+                if(clean) child.exec(command2, Meteor.bindEnvironment(function(e,x,y){
                     console.log("2-Image cleaned");
                     Meteor.setTimeout( Meteor.bindEnvironment( function() {
                         Processed.addFile(img._storagePath+"/out_"+realName, { fileName:"cleaned" , type:img.type, userId:id, meta:{}});
