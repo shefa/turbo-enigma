@@ -4,8 +4,8 @@
 
 #olddpi=$(convert "split_final_$1" -format "%[resolution.x]" info:)
 
-filter=20
-offset=14
+filter=25
+offset=18
 if [ "$2" != "" ]; then
     filter=$2
 fi

@@ -38,12 +38,18 @@ Meteor.methods({
 
         console.log("1-Splitting image...");
         child.exec(command, Meteor.bindEnvironment( function(e,x,y){
-            console.log("1-Split completed!!!");
+            console.log("1-Split completed!!!, splitted images = " + x);
             Meteor.setTimeout( Meteor.bindEnvironment( function() {
                 Processed.addFile(img._storagePath+"/split_edged_blurred_"+realName, { fileName:"edges", type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_contours_"+realName, { fileName:"contours" , type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_final_"+realName, { fileName:"transform" , type:img.type, userId:id, meta:{}});
                 Processed.addFile(img._storagePath+"/split_final_thresh_"+realName, { fileName:"threshold" , type:img.type, userId:id, meta:{}});
+                
+                for(var i=1;i<parseInt(x);i++)
+                {
+                    Processed.addFile(img._storagePath+"/split_final_"+i.toString()+"_"+realName, { fileName:"transform"+i.toString() , type:img.type, userId:id, meta:{}});
+                }
+
             }),700);
             
             child.exec(command3, Meteor.bindEnvironment(function(e,x,y){

@@ -26,3 +26,6 @@
     .stuff {
         margin-top: 3em;
     }
+    .image {
+        max-height: 50vh;
+    }

@@ -58,15 +58,16 @@ image = resize(image, height = 700)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 gray = cv2.GaussianBlur(gray, (5, 5), 0)
 #gray = cv2.medianBlur(gray,5)
-edged = cv2.Canny(gray, 10, 110)
+edged = cv2.Canny(gray, 30, 140)
 edged_blur = edged.copy()
 edged_blur = cv2.GaussianBlur(edged_blur, (3,3), 0)
 
 cnts = cv2.findContours(edged_blur.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[1]
-print len(cnts)
-cnts = sorted(cnts, key = cv2.contourArea, reverse = True)
+cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:10]
 
 found=0
+second_found=0
+
 for c in cnts:
     # approximate the contour
     peri = cv2.arcLength(c, True)
@@ -77,9 +78,14 @@ for c in cnts:
     if len(approx) == 4:
         if found==0:
             screenCnt = approx
+            maxArea = cv2.contourArea(c)
             found=1
-        cv2.drawContours(image, [approx], -1, (0, 255, 0), 2)
-
+        if cv2.contourArea(c) >= maxArea/5:
+            cv2.drawContours(image, [approx], -1, (0, 255, 0), 2)
+            if second_found>0:
+                outp =  four_point_transform(orig, approx.reshape(4, 2) * ratio)
+                cv2.imwrite("split_final_"+str(second_found)+"_"+args["image"], outp)
+            second_found=second_found+1
 
 warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
 
@@ -95,3 +101,5 @@ cv2.imwrite("split_edged_blurred_"+args["image"],edged_blur)
 cv2.imwrite("split_contours_"+args["image"],image)
 cv2.imwrite("split_final_"+args["image"],warped)
 cv2.imwrite("split_final_thresh_"+args["image"],final)
+
+print second_found
