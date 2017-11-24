@@ -36,7 +36,7 @@ Meteor.methods({
         console.log("1-Deskewing image...");
         
         child.exec(command, Meteor.bindEnvironment( function(e,x,y){
-            console.log("1-Deskew completed!!!);
+            console.log("1-Deskew completed!!!");
             Meteor.setTimeout( Meteor.bindEnvironment( function() {
                 Deskewed.addFile(img._storagePath+"/fft_"+realName, { fileName:"Fourier Spectrum", type:img.type, userId:id, meta:{}});
                 Deskewed.addFile(img._storagePath+"/fft_polar_"+realName, { fileName:"Linear Polar" , type:img.type, userId:id, meta:{}});
