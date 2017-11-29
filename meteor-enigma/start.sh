@@ -1,0 +1,3 @@
+export METEOR_ALLOW_SUPERUSER=1
+export ROOT_URL=http://51.254.202.28:3000
+meteor

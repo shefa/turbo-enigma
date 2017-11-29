@@ -47,6 +47,8 @@ def four_point_transform(image, pts):
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required = True,
 	help = "Path to the image to be scanned")
+ap.add_argument("-s", "--silent", required = False, 
+        action="store_true", help="Disable intermediate results.")
 args = vars(ap.parse_args())
 
 image = cv2.imread(args["image"])
@@ -67,6 +69,8 @@ cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:10]
 
 found=0
 second_found=0
+total_area=0
+splitted=[]
 
 for c in cnts:
     # approximate the contour
@@ -83,9 +87,11 @@ for c in cnts:
         if cv2.contourArea(c) >= maxArea/5:
             cv2.drawContours(image, [approx], -1, (0, 255, 0), 2)
             if second_found>0:
-                outp =  four_point_transform(orig, approx.reshape(4, 2) * ratio)
+                outp = four_point_transform(orig, approx.reshape(4, 2) * ratio)
                 cv2.imwrite("split_final_"+str(second_found)+"_"+args["image"], outp)
             second_found=second_found+1
+            total_area+=cv2.contourArea(c)
+
 
 warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
 
@@ -97,8 +103,13 @@ final = final.astype("uint8") * 255
 
 
 #cv2.imwrite("split_edged_"+args["image"],edged)
-cv2.imwrite("split_edged_blurred_"+args["image"],edged_blur)
-cv2.imwrite("split_contours_"+args["image"],image)
+debug_print=1
+if args["silent"]:
+    debug_print=0
+
+if debug_print:
+    cv2.imwrite("split_edged_blurred_"+args["image"],edged_blur)
+    cv2.imwrite("split_contours_"+args["image"],image)
 cv2.imwrite("split_final_"+args["image"],warped)
 cv2.imwrite("split_final_thresh_"+args["image"],final)
 
