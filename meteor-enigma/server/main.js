@@ -13,6 +13,9 @@ Meteor.startup(() => {
         Images.load('http://51.254.202.28/turbo-enigma/preprocess/test_img/scanned_page.jpg', {
             fileName: 'page.jpg'
         });
+        Images.load('http://51.254.202.28/turbo-enigma/preprocess/test_img/three_receipts.jpg',{ 
+            fileName: 'receipts.jpg'
+        }); 
   }
 });
 
